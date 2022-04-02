@@ -1,0 +1,199 @@
+{% load static %}
+<div class="row">
+    <div class="col-md-12">
+        <div class="card">
+            <div class="col-md-12 navbar">
+                <h3 class="card-title" id="scanner-info-title">IP库仪表盘</h3>
+            </div>
+            <div class="card-header">
+                <div class="row row-card-no-pd">
+                    <div class="col-sm-6 col-md-3">
+                        <div class="card card-stats card-round">
+                            <div class="card-body ">
+                                <div class="row">
+                                    <div class="col-5">
+                                        <div class="icon-big text-center">
+                                            <i class="flaticon-shapes-1 text-warning"></i>
+                                        </div>
+                                    </div>
+                                    <div class="col-7 col-stats">
+                                        <div class="numbers">
+                                            <p class="card-category">数据源</p>
+                                            <h4 class="card-title" id="IPD-source">------</h4>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-sm-6 col-md-3">
+                        <div class="card card-stats card-round">
+                            <div class="card-body">
+                                <div class="row">
+                                    <div class="col-5">
+                                        <div class="icon-big text-center">
+                                            <i class="flaticon-layers text-danger"></i>
+                                        </div>
+                                    </div>
+                                    <div class="col-7 col-stats">
+                                        <div class="numbers">
+                                            <p class="card-category">总数据量</p>
+                                            <h4 class="card-title" id="IPD-total">------</h4>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-sm-6 col-md-3">
+                        <div class="card card-stats card-round">
+                            <div class="card-body">
+                                <div class="row">
+                                    <div class="col-5">
+                                        <div class="icon-big text-center">
+                                            <i class="flaticon-clock-1 text-primary"></i>
+                                        </div>
+                                    </div>
+                                    <div class="col-7 col-stats">
+                                        <div class="numbers">
+                                            <p class="card-category">当前库版本</p>
+                                            <h4 class="card-title" id="IPD-current">------</h4>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-sm-6 col-md-3">
+                        <div class="card card-stats card-round">
+                            <div class="card-body ">
+                                <div class="row">
+                                    <div class="col-5">
+                                        <div class="icon-big text-center">
+                                            <i class="flaticon-archive text-success"></i>
+                                        </div>
+                                    </div>
+                                    <div class="col-7 col-stats">
+                                        <div class="numbers">
+                                            <p class="card-category">最新版本</p>
+                                            <h4 class="card-title" id="IPD-lasted">------</h4>
+                                            <button class="btn btn-link fa fa-link"
+                                                    onclick="IPDManager_checkLasted('1')">检查更新
+                                            </button>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-md-12">
+                    <div class="card-header">
+                        <div class="row">
+                            <div class="col-md-9 navbar">
+                                <h3 class="card-title" id="scanner-title">IP库</h3>
+                            </div>
+                            <div class="col-md-3  form-group form-floating-label">
+                                <div class="input-group">
+                                    <input type="text" placeholder="完整的IP或地点" class="form-control" id="IPD-search"
+                                           onkeydown="if(event.keyCode===13)IPD_item_oper(getIPDSelected(),1    ,document.getElementById('IPD-search').value)">
+                                    <div class="input-group-prepend"
+                                         onclick="IPD_item_oper(getIPDSelected(),  1 ,document.getElementById('IPD-search').value)">
+                                        <div class="btn btn-info btn btn-primary btn-border">
+                                            <i class="fa fa-search search-icon"></i>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!--#########################################################################################################################-->
+                    <div class="card-body">
+                        <table class="table mt-3">
+                            <thead>
+                            <tr>
+                                <th scope="col">起始IP</th>
+                                <th scope="col">结束IP</th>
+                                <th scope="col">起始网络序列</th>
+                                <th scope="col">结束网络序列</th>
+                                <th scope="col">地理位置</th>
+                            </tr>
+                            </thead>
+                            <tbody id="IPD-context">
+
+                            </tbody>
+                        </table>
+
+                    </div>
+                    <!--#########################################################################################################################-->
+                    <div class="card-header">
+                        <div class="card-head-row">
+                            <div class="card-tools">
+                                <ul class="nav nav-pills nav-secondary nav-pills-no-bd nav-sm pagination pg-primary"
+                                    id="pills-tab"
+                                    role="tablist">
+                                    <li class="page-item">
+                                        <div class="form-group" id="ipdbManagerPageInfo">
+                                            共录入数据0条，共0页
+                                        </div>
+                                    </li>
+                                    <li class="nav-item submenu">
+
+                                        <select class="form-control form-control-sm" id="IPDSelect"
+                                                style="float:right;"
+                                                onchange="IPD_item_oper(getIPDSelected(), $.cookie('pg'))">
+                                            <option value="0">每页 5 条</option>
+                                            <option value="1">每页 10 条</option>
+                                            <option value="2">每页 15 条</option>
+                                            <option value="3">每页 20 条</option>
+                                            <option value="4">每页 50 条</option>
+                                        </select>
+
+                                    </li>
+                                    <li class="page-item" id="dbManagerToFirstPage"
+                                        onclick="IPDManager_PageOper('reset')">
+                                        <a class="page-link" href="#" aria-label="Previous">
+                                            <span aria-hidden="true"><<</span>
+                                            <span class="sr-only">Previous</span>
+                                        </a>
+                                    </li>
+                                    <li class="page-item active" id="dbManagerToP1"
+                                        onclick="IPDManager_PageOper('up')"><a class="page-link" href="#">1</a></li>
+                                    <li class="page-item" id="dbManagerNow" onclick="IPDManager_PageOper('now')"><a
+                                            class="page-link" href="#">2</a></li>
+                                    <li class="page-item" id="dbManagerToN1" onclick="IPDManager_PageOper('down')"><a
+                                            class="page-link" href="#">3</a></li>
+                                    <li class="page-item" id="dbManagerToLastPage"
+                                        onclick="IPDManager_PageOper('last');">
+                                        <a class="page-link" href="#" aria-label="Next">
+                                            <span aria-hidden="true">>></span>
+                                            <span class="sr-only">Next</span>
+                                        </a>
+                                    </li>
+
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+</div>
+
+<script>
+    $.cookie('pg', 1);
+    $('input').click(function (e) {
+        e.stopPropagation();//阻止其继续冒泡
+    })
+    $(document).ready(function () {
+        document.getElementById("IPDSelect").options.selectedIndex = 0;
+        IPD_item_oper(0, getIPDSelected())
+    });
+    IPDManager_dashBoard()
+    IPDManager_checkLasted(0)
+</script>

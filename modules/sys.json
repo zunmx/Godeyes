@@ -1,0 +1,50 @@
+{
+  "app": "God Eyes",
+  "version": "v1.0",
+  "firstRun": true,
+  "scannerStopWaitSecond": 5,
+  "proxies": "Disable",
+  "proxiesList": "FingerPrint/proxies.txt",
+  "database": {
+  },
+  "ipTable": {
+    "source": "CZ88",
+    "currentVersion": "2022-03-30",
+    "commit_num": 4096
+  },
+  "httpScanners": {
+    "enable": "True",
+    "timeout": 3,
+    "threadCount": 100,
+    "delay": 1,
+    "header": "FingerPrint/custom/header/default.json",
+    "portList": "FingerPrint/HttpPortList.txt",
+    "RequestHeaderMode": "custom"
+  },
+  "mysqlScanners": {
+    "enable": "True",
+    "threadCount": 100,
+    "delay": 2,
+    "crash": "True",
+    "dictionary_user": "less_user.txt",
+    "dictionary_pwd": "less_pwd.txt"
+  },
+  "sshScanners": {
+    "enable": "True",
+    "timeout": 3,
+    "threadCount": 100,
+    "delay": 2,
+    "crash": "True",
+    "dictionary_user": "less_user.txt",
+    "dictionary_pwd": "less_pwd.txt"
+  },
+  "telnetScanners": {
+    "enable": "True",
+    "timeout": 3,
+    "threadCount": 100,
+    "delay": 2,
+    "crash": "True",
+    "dictionary_user": "less_user.txt",
+    "dictionary_pwd": "less_pwd.txt"
+  }
+}

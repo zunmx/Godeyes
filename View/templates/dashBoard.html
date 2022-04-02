@@ -1,0 +1,220 @@
+{% load static %}
+<script src="{% static '/js/atlantis.min.js'%}"></script>
+<script>
+    $(document).ready(function () {
+        getDashBoardUpload();
+        loadDashBoardNews();
+        loadDashBoardThreadNumber();
+        loadLogSWEInfo()
+    });
+</script>
+<div class="page-inner">
+    <div class="mt-2 mb-4">
+        <h2 class="text-white pb-2">欢迎回来， {{account}}</h2>
+        <h5 class="text-white op-7 mb-4">以下是数据库中的基本信息</h5>
+    </div>
+    <div class="row">
+        <div class="col-md-4">
+            <div class="card card-dark bg-primary-gradient">
+                <div class="card-body pb-0">
+                    <div class="h1 fw-bold float-right">个</div>
+                    <h2 class="mb-2" id='db_http_total'>---</h2>
+                    <p>HTTP/S 服务总量</p>
+                    <div class="pull-in sparkline-fix chart-as-background">
+                        <div id="lineChart">
+                            <canvas width="327" height="70"
+                                    style="display: inline-block; width: 327px; height: 70px; vertical-align: top;"></canvas>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-4">
+            <div class="card card-dark bg-secondary-gradient">
+                <div class="card-body pb-0">
+                    <div class="h1 fw-bold float-right">个</div>
+                    <h2 class="mb-2" id='db_ssh_total'>---</h2>
+                    <p>SSH 服务总量</p>
+                    <div class="pull-in sparkline-fix chart-as-background">
+                        <div id="lineChart2">
+                            <canvas width="327" height="70"
+                                    style="display: inline-block; width: 327px; height: 70px; vertical-align: top;"></canvas>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-4">
+            <div class="card card-dark bg-info-gradient">
+                <div class="card-body pb-0">
+                    <div class="h1 fw-bold float-right">个</div>
+                    <h2 class="mb-2" id="db_mysql_total">---</h2>
+                    <p>Mysql 服务总量</p>
+                    <div class="pull-in sparkline-fix chart-as-background">
+                        <div id="lineChart3">
+                            <canvas width="327" height="70"
+                                    style="display: inline-block; width: 327px; height: 70px; vertical-align: top;"></canvas>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="row">
+
+        <div class="col-md-9">
+            <div class="card bg-dark">
+                <div class="card-header">
+                    <div class="card-head-row">
+                        <h4 class="card-title">最新事件</h4>
+                        <div class="card-tools">
+                            <button class="btn btn-icon btn-link btn-primary btn-xs btn-refresh-card"
+                                    onclick="loadLogSWEInfo();"><span
+                                    class="fa fa-sync-alt"></span>
+                            </button>
+                        </div>
+                    </div>
+                    <div class="card-body">
+                        <div class="row row-card">
+                            <div class="col-sm-6 col-md-4">
+                                <div class="card card-stats card-round">
+                                    <div class="card-body ">
+                                        <div class="row">
+                                            <div class="col-5">
+                                                <div class="icon-big text-center">
+                                                    <i class="flaticon-chart-pie text-success"></i>
+                                                </div>
+                                            </div>
+                                            <div class="col-7 col-stats">
+                                                <div class="numbers">
+                                                    <p class="card-category">成功</p>
+                                                    <h4 class="card-title" id="dashboard_event_record">---</h4>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-sm-6 col-md-4">
+                                <div class="card card-stats card-round">
+                                    <div class="card-body ">
+                                        <div class="row">
+                                            <div class="col-5">
+                                                <div class="icon-big text-center">
+                                                    <i class="flaticon-coins text-warning"></i>
+                                                </div>
+                                            </div>
+                                            <div class="col-7 col-stats">
+                                                <div class="numbers">
+                                                    <p class="card-category">警告</p>
+                                                    <h4 class="card-title" id="dashboard_event_warning">---</h4>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-sm-6 col-md-4">
+                                <div class="card card-stats card-round">
+                                    <div class="card-body">
+                                        <div class="row">
+                                            <div class="col-5">
+                                                <div class="icon-big text-center">
+                                                    <i class="flaticon-error text-danger"></i>
+                                                </div>
+                                            </div>
+                                            <div class="col-7 col-stats">
+                                                <div class="numbers">
+                                                    <p class="card-category">错误</p>
+                                                    <h4 class="card-title" id="dashboard_event_error">---</h4>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <ol class="activity-feed">
+                            <li class="feed-item feed-item-warning">
+                                <time class="date" d>警告</time>
+                                <span class="text">提示：当连接通信被拒绝，状态码为拒绝访问时触发警告</span>
+                            </li>
+                            <li class="feed-item feed-item-danger">
+                                <time class="date">错误</time>
+                                <span class="text">提示：当录入数据库时出错、连接故障、程序异常触发错误 </span>
+                            </li>
+                        </ol>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-3">
+            <div class="card card-primary bg-dark-gradient">
+                <div class="card-header">
+                    <div class="card-head-row">
+                        <h4 class="card-title">已启动的线程</h4>
+                        {%if 'SuperAdmin' == power%}
+                        &nbsp;&nbsp;&nbsp;&nbsp;<button class="btn btn-danger" onclick="stopAllThreads();">关闭所有线程
+                    </button>
+                        {%endif%}
+                        <div class="card-tools">
+                            <button class="btn btn-icon btn-link btn-primary btn-xs btn-refresh-card"
+                                    onclick="loadDashBoardThreadNumber();"><span
+                                    class="fa fa-sync-alt"></span></button>
+                        </div>
+                    </div>
+                </div>
+                <div class="card-body">
+
+                    <h1 class="mb-4 fw-bold" id="thread_-total_num">---</h1>
+                    <h4 class="mt-3 b-b1 pb-2 mb-5 fw-bold"></h4>
+                    <div id="activeUsersChart"></div>
+                    <h4 class="mt-5 pb-3 mb-0 fw-bold">详情</h4>
+                    <ul class="list-unstyled">
+                        <li class="d-flex justify-content-between pb-1 pt-1"><small>http</small><span
+                                id="thread_http_num">---</span></li>
+                        <li class="d-flex justify-content-between pb-1 pt-1"><small>mysql</small><span
+                                id="thread_mysql_num">---</span></li>
+                        <li class="d-flex justify-content-between pb-1 pt-1"><small>ssh</small><span
+                                id="thread_ssh_num">---</span></li>
+                        <li class="d-flex justify-content-between pb-1 pt-1"><small>telnet</small><span
+                                id="thread_telnet_num">---</span></li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+
+    </div>
+    <div class="row row-card-no-pd">
+        <div class="col-md-12">
+            <div class="card">
+                <div class="card-header">
+                    <div class="card-head-row">
+                        <h4 class="card-title">最新信息</h4>
+                        <div class="card-tools">
+                            <button class="btn btn-icon btn-link btn-primary btn-xs btn-refresh-card"
+                                    onclick="loadDashBoardNews();"><span
+                                    class="fa fa-sync-alt"></span></button>
+                        </div>
+                    </div>
+                    <p class="card-category">
+                        最新录入的信息</p>
+                </div>
+                <div class="card-body">
+                    <div class="row">
+                        <div class="col-md-12">
+                            <div class="table-responsive table-hover table-sales">
+                                <table class="table" id="dashboardData0">
+                                    <tbody>
+
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+</div>

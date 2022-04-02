@@ -1,0 +1,39 @@
+{% load static %}
+
+<script>
+    $.cookie('pg', 1);
+    $('input').click(function (e) {
+        e.stopPropagation();//阻止其继续冒泡
+    })
+    $(function(){
+        getScannerLog()
+    })
+</script>
+<div class="col-md-12">
+    <div class="card">
+        <div class="card-header">
+            <h4 class="card-title">扫描器日志</h4>
+        </div>
+        <div class="card-body">
+            <div class="table-responsive">
+                <table id="basic-datatables" class="display table table-striped table-hover" style="width: 100%;">
+                    <thead>
+                    <tr>
+                        <th>扫描器</th>
+                        <th>级别</th>
+                        <th>IP地址</th>
+                        <th>端口</th>
+                        <th>日志内容</th>
+                        <th>时间</th>
+                    </tr>
+                    </thead>
+
+                    <tbody id="scannerLogData">
+
+
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>

@@ -1,0 +1,36 @@
+<!doctype html>
+{% load static %}
+<html>
+<head>
+    <meta http-equiv="pragma" content="no-cache">
+    <meta http-equiv="cache-control" content="no-cache">
+    <meta http-equiv="expires" content="0">
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+    <title>添加账号信息</title>
+    <link href="{% static 'css/modA.css' %}" media="all" rel="stylesheet" type="text/css"/>
+</head>
+<body>
+
+<form class="form-login" method="post" action="/addAccount.do/">
+    <div class="logo"></div>
+    </br>
+    <div class="form-item">
+        <label for="_user"></label><input id="usr" name='username' type="text" readonly="readonly" placeholder="账户">
+    </div>
+    <div class="form-item">
+        <label for="_psw"></label><input id="psw" name='password' type="password" placeholder="密码">
+    </div>
+    <div class="form-item">
+        <label for="_psw2"></label><input id="psw1" name='password1' type="password" placeholder="确认密码">
+    </div>
+        <div class="form-item">
+        <label for="_user"></label><input id="power" name='power' type="password" placeholder="确认密码">
+    </div>
+    <div class="form-item">
+        <button id="submit" name="login" type="submit" value="创建">创建</button>
+    </div>
+    {% csrf_token %}
+</form>
+
+</body>
+</html>

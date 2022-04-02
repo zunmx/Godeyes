@@ -1,0 +1,143 @@
+{% load static %}
+<script>
+    $(document).ready(function () {
+        loadThisPage('firstRun');
+    });
+
+    function loadThisPage(content) {
+        systemConfigure('r', content);
+
+        swal({
+            title: ' 成功',
+            text: '刷新成功',
+            icon: "success",
+            timer: 1000,
+            buttons: false,
+        });
+
+
+    }
+</script>
+<style>
+    pre {
+        outline: 1px solid #ccc;
+        padding: 5px;
+        margin: 5px;
+        color: yellow;
+    }
+
+    .string {
+        color: cornflowerblue;
+    }
+
+    .number {
+        color: darkorange;
+    }
+
+    .boolean {
+        color: blue;
+    }
+
+    .null {
+        color: magenta;
+    }
+
+    .key {
+        color: greenyellow;
+    }
+</style>
+
+<div class="card">
+    <div class="col-md-12">
+        <div class="card">
+            <div class="card-header">
+                <span class="card-title" style='float:left'>操作</span>
+
+                <button class="btn btn-primary" style='float:right;margin-left: 20px;'
+                        onclick="systemConfigure('w',document.getElementById('systemConfigure').innerText)">保存
+                </button>
+                <button class="btn btn-secondary" style='float:right;margin-left: 20px;'
+                        onclick="check()">格式化&校验
+                </button>
+                <button class="btn btn-success" style='float:right;margin-left: 20px;'
+                        onclick="loadThisPage()">重新加载
+                </button>
+            </div>
+        </div>
+    </div>
+    <div class="card-body">
+        <div class="form-group">
+            <div class="form-group">
+                <label for="systemConfigure">系统配置文件</label>
+                <h6 class="text-warning">修改系统配置文件可能导致程序不稳定，请合理修改。遵循json语法格式，否则系统将无法正常工作</h6>
+                <pre contenteditable="true" id='systemConfigure'></pre>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+    function prettyPrint() {
+        const ugly = document.getElementById('systemConfigure').innerHTML;
+        const obj = JSON.parse(ugly);
+        document.getElementById('systemConfigure').innerHTML = JSON.stringify(obj, undefined, 2);
+    }
+
+    function check() {
+        try {
+            JSON.parse(document.getElementById('systemConfigure').innerText)
+            swal("操作成功", "校验以及格式化成功", {
+                icon: "success",
+                buttons: {
+                    confirm: {
+                        className: 'btn btn-success'
+                    }
+                },
+            });
+        } catch
+            (e) {
+            swal("JSON格式错误", String(e), {
+                icon: "error",
+                buttons: {
+                    confirm: {
+                        className: 'btn btn-danger'
+                    }
+                },
+            });
+            return;
+        }
+        output(document.getElementById('systemConfigure').innerText);
+
+    }
+
+    function output(text) {
+        document.getElementById('systemConfigure').innerHTML = "";
+        document.getElementById('systemConfigure').appendChild(document.createElement('item')).innerHTML = syntaxHighlight(text);
+
+    }
+
+    function syntaxHighlight(json) {
+        json = json.replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;');
+        result = json.replace(/("(\\u[a-zA-Z0-9]{4}|\\[^u]|[^\\"])*"(\s*:)?|\b(true|false|null)\b|-?\d+(?:\.\d*)?(?:[eE][+\-]?\d+)?)/g, function (match) {
+            let cls = 'number';
+            if (/^"/.test(match)) {
+                if (/:$/.test(match)) {
+                    cls = 'key';
+                } else {
+                    cls = 'string';
+                }
+            } else if (/true|false/.test(match)) {
+                cls = 'boolean';
+            } else if (/null/.test(match)) {
+                cls = 'null';
+            }
+            return '<span class="' + cls + '">' + match + '</span>';
+        });
+        let tmp = result.replaceAll("span>,", 'span>,<br/>').replaceAll(": {", ": {<br/> ").replaceAll("},", "<br/>},").replaceAll("{", "{<br/>")
+        return tmp.replaceAll("\n", "")
+
+    }
+
+
+</script>
+

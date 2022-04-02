@@ -1,0 +1,451 @@
+<!DOCTYPE html>
+{% load static %}
+
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>GodEyes</title>
+    <meta http-equiv="X-UA-Compatible" content="IE=edge"/>
+    <title>Home</title>
+    <meta content='width=device-width, initial-scale=1.0, shrink-to-fit=no' name='viewport'/>
+    <script src="{% static 'js/webfont.min.js'%}"></script>
+    <script src="{% static 'js/jquery.3.2.1.min.js'%}"></script>
+    <script src="{% static 'js/myjs.js'%}" async></script>
+    <script src="{% static '/js/atlantis.min.js'%}"></script>
+    <script>
+
+        WebFont.load({
+            google: {"families": ["Lato:300,400,700,900"]},
+            custom: {
+                "families": ["Flaticon", "Font Awesome 5 Solid", "Font Awesome 5 Regular", "Font Awesome 5 Brands", "simple-line-icons"],
+                urls: ["{% static 'js/fonts.min.css'%}"]
+            },
+            active: function () {
+                sessionStorage.fonts = true;
+            }
+        });
+
+        $(document).ready(function () {
+            $('#innerContent').load('dashBoard');
+            // $('#innerContent').load('scanner');
+        });
+
+    </script>
+    <link rel="stylesheet" href="{% static 'css/bootstrap.min.css'%}">
+    <link rel="stylesheet" href="{% static 'css/atlantis.min.css'%}">
+    <link rel="stylesheet" href="{% static 'css/manager.css'%}">
+
+</head>
+<body data-background-color="dark">
+<div class="wrapper">
+    <div class="main-header">
+        <!-- Logo Header -->
+        <div class="logo-header" data-background-color="dark2">
+
+            <a href="/" class="logo">
+                <img style="width:48px;height:48px" src="{% static 'imgs/logo.ico'%}" alt="GodEyes"
+                     class="navbar-brand">
+                <span class="text"><big>&nbsp GOD-EYES</big></span>
+            </a>
+            <button class="navbar-toggler sidenav-toggler ml-auto" type="button" data-toggle="collapse"
+                    data-target="collapse" aria-expanded="false" aria-label="Toggle navigation">
+					<span class="navbar-toggler-icon">
+						<i class="icon-menu"></i>
+					</span>
+            </button>
+            <button class="topbar-toggler more"><i class="icon-options-vertical"></i></button>
+            <div class="nav-toggle">
+                <button class="btn btn-toggle toggle-sidebar">
+                    <i class="icon-menu"></i>
+                </button>
+            </div>
+        </div>
+        <!-- End Logo Header -->
+
+        <!-- Navbar Header -->
+        <nav class="navbar navbar-header navbar-expand-lg" data-background-color="dark">
+
+            <div class="container-fluid">
+                <div class="collapse" id="search-nav">
+
+                    <div class="input-group-text" id="GEsystem-status" onselect="return;">
+
+                    </div>
+
+                </div>
+                <ul class="navbar-nav topbar-nav ml-md-auto align-items-center">
+                    <li class="nav-item toggle-nav-search hidden-caret">
+                        <a class="nav-link" data-toggle="collapse" href="#search-nav" role="button"
+                           aria-expanded="false" aria-controls="search-nav">
+                            <i class="fa fa-search"></i>
+                        </a>
+                    </li>
+                    <li class="nav-item dropdown hidden-caret">
+                        <a class="nav-link" data-toggle="dropdown" href="#" aria-expanded="false">
+                            <i class="fas fa-layer-group"></i>
+                        </a>
+                        <div class="dropdown-menu quick-actions quick-actions-info animated fadeIn">
+                            <div class="quick-actions-header">
+                                <span class="title mb-1">快捷指令</span>
+                                <span class="subtitle op-8">快速执行您需要的操作</span>
+                            </div>
+                            <div class="quick-actions-scroll scrollbar-outer">
+                                <div class="quick-actions-items">
+                                    <div class="row m-0">
+                                        {%if 'SuperAdmin' == power%}
+                                        <a class="col-6 col-md-4 p-0" onclick="$('#innerContent').load('scanner')">
+                                            <div class="quick-actions-item">
+                                                <i class="flaticon-file-1"></i>
+                                                <span class="text">开启扫描器</span>
+                                            </div>
+                                        </a>
+                                        {%endif%}
+
+                                        <a class="col-6 col-md-4 p-0" onclick="$('#innerContent').load('dataManager')">
+                                            <div class="quick-actions-item">
+                                                <i class="flaticon-database"></i>
+                                                <span class="text">查看数据表</span>
+                                            </div>
+                                        </a>
+                                        <a class="col-6 col-md-4 p-0"
+                                           onclick="$('#innerContent').load('ipTableManager')">
+                                            <div class="quick-actions-item">
+                                                <i class="flaticon-clock-1"></i>
+                                                <span class="text">IP管理</span>
+                                            </div>
+                                        </a>
+                                        {%if 'SuperAdmin' == power%}
+                                        <a class="col-6 col-md-4 p-0" onclick="$('#innerContent').load('scannerLog')">
+                                            <div class="quick-actions-item">
+                                                <i class="flaticon-interface-1"></i>
+                                                <span class="text">扫描器日志</span>
+                                            </div>
+                                        </a>
+                                        <a class="col-6 col-md-4 p-0" onclick="$('#innerContent').load('systemLog')">
+                                            <div class="quick-actions-item">
+                                                <i class="flaticon-list"></i>
+                                                <span class="text">系统日志</span>
+                                            </div>
+                                        </a>
+                                        {%endif%}
+                                        <a class="col-6 col-md-4 p-0" href="/logout">
+                                            <div class="quick-actions-item">
+                                                <i class="flaticon-power"></i>
+                                                <span class="text">安全退出</span>
+                                            </div>
+                                        </a>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </li>
+                    <li class="nav-item dropdown hidden-caret">
+                        <a class="dropdown-toggle profile-pic" data-toggle="dropdown" href="#" aria-expanded="false">
+                            <div class="avatar-sm">
+                                <img src="{% static 'imgs/profile.gif'%}" alt="..." class="avatar-img rounded-circle">
+                            </div>
+                        </a>
+                        <ul class="dropdown-menu dropdown-user animated fadeIn">
+                            <div class="dropdown-user-scroll scrollbar-outer">
+                                <li>
+                                    <div class="user-box">
+                                        <div class="avatar-lg"><img src="{% static 'imgs/profile.gif'%}"
+                                                                    alt="image profile" class="avatar-img rounded">
+                                        </div>
+                                        <div class="u-text">
+                                            <h4></h4>
+                                            <p class="text-muted">用户：{{username}}</p>
+                                            <p class="text-muted">权限：{{power}}</p>
+                                            <!--                                            <a href="\logout" class="btn btn-xs btn-secondary btn-sm">注销登录</a>-->
+                                        </div>
+                                    </div>
+                                </li>
+                                <li>
+                                    <div class="dropdown-divider"></div>
+                                    <a class="dropdown-item" href="/modifyAccount">修改密码</a>
+                                    <div class="dropdown-divider"></div>
+                                    <a class="dropdown-item" href="/logout">注销登录</a>
+
+                                </li>
+                            </div>
+                        </ul>
+                    </li>
+                </ul>
+            </div>
+        </nav>
+        <!-- End Navbar -->
+    </div>
+
+    <!-- Sidebar -->
+    <div class="sidebar sidebar-style-2" data-background-color="dark2">
+        <div class="sidebar-wrapper scrollbar scrollbar-inner">
+            <div class="sidebar-content">
+                <div class="user">
+                    <div class="avatar-sm float-left mr-2">
+                        <img src="{% static 'imgs/profile.gif'%}" alt="..." class="avatar-img rounded-circle">
+                    </div>
+                    <div class="info">
+                        <a data-toggle="collapse" href="#collapseExample" aria-expanded="true">
+								<span>
+									{{username}}
+									<span class="user-level">{{power}}</span>
+									<span class="caret"></span>
+								</span>
+                        </a>
+                        <div class="clearfix"></div>
+
+                        <div class="collapse in" id="collapseExample">
+                            <ul class="nav">
+                                <li>
+                                    <a href="/modifyAccount">
+                                        <span class="link-collapse href='/modifyAccount'">修改密码</span>
+                                    </a>
+                                </li>
+                                <li>
+                                    <a href="/logout">
+                                        <span class="link-collapse href=''">注销登录</span>
+                                    </a>
+                                </li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+                <ul class="nav nav-primary">
+                    <li class="nav-item active">
+                        <a data-toggle="collapse" href="#" onclick="$('#innerContent').load('dashBoard');"
+                           class="collapsed" aria-expanded="false">
+                            <i class="fas fa-home"></i>
+                            <p>仪表盘</p>
+                            <span class="" id="system_status"></span>
+                        </a>
+                    </li>
+                    <li class="nav-section">
+							<span class="sidebar-mini-icon">
+								<i class="fa fa-ellipsis-h"></i>
+							</span>
+                        <h4 class="text-section">控制台</h4>
+                    </li>
+                    {%if 'SuperAdmin' == power%}
+                    <li class="nav-item">
+                        <a data-toggle="collapse" href="#base">
+                            <i class="fas fa-layer-group"></i>
+                            <p>扫描器</p>
+                            <span class="caret"></span>
+                        </a>
+                        <div class="collapse" id="base">
+                            <ul class="nav nav-collapse">
+                                <li>
+                                    <a href="#" onclick="$('#innerContent').load('scanner')">
+                                        <span class="sub-item">综合扫描器</span>
+                                    </a>
+                                </li>
+                                <li>
+                                    <a href="#" onclick="$('#innerContent').load('portSettings')">
+                                        <span class="sub-item">端口设置</span>
+                                    </a>
+                                </li>
+                                <li>
+                                    <a href="#" onclick="$('#innerContent').load('requestConstructor')">
+                                        <span class="sub-item">请求构造</span>
+                                    </a>
+                                </li>
+                                <li>
+                                    <a href="#" onclick="$('#innerContent').load('crackRules')">
+                                        <span class="sub-item">穷举爆破规则</span>
+                                    </a>
+                                </li>
+                            </ul>
+                        </div>
+                    </li>
+                    {%endif%}
+                    <li class="nav-item">
+                        <a data-toggle="collapse" href="#sidebarLayouts">
+                            <i class="fas fa-th-list"></i>
+                            <p>数据中心</p>
+                            <span class="caret"></span>
+                        </a>
+                        <div class="collapse" id="sidebarLayouts">
+                            <ul class="nav nav-collapse">
+                                <li>
+                                    <a href="#" onclick="$('#innerContent').load('dataManager')">
+                                        <span class="sub-item">数据管理</span>
+                                    </a>
+                                </li>
+                                <li>
+                                    <a href="#" onclick="$('#innerContent').load('ipTableManager')">
+                                        <span class="sub-item">IP表管理</span>
+                                    </a>
+                                </li>
+                                <li>
+                                    <a href="#" onclick="$('#innerContent').load('fingerPrint')">
+                                        <span class="sub-item">指纹管理</span>
+                                    </a>
+                                </li>
+                            </ul>
+                        </div>
+                    </li>
+                    {%if 'SuperAdmin' == power%}
+                    <li class="nav-item">
+                        <a data-toggle="collapse" href="#forms">
+                            <i class="fas fa-pen-square"></i>
+                            <p>系统设置</p>
+                            <span class="caret"></span>
+                        </a>
+                        <div class="collapse" id="forms">
+                            <ul class="nav nav-collapse">
+                                <li>
+                                    <a href="#" onclick="$('#innerContent').load('userManager')">
+                                        <span class="sub-item">用户管理</span>
+                                    </a>
+                                </li>
+                                <li>
+                                    <a href="#" onclick="$('#innerContent').load('scannerLog')">
+                                        <span class="sub-item">扫描器日志</span>
+                                    </a>
+                                </li>
+                                <li>
+                                    <a href="#" onclick="$('#innerContent').load('systemLog')">
+                                        <span class="sub-item">系统日志</span>
+                                    </a>
+                                </li>
+                                <li>
+                                    <a href="#" onclick="$('#innerContent').load('systemConfig')">
+                                        <span class="sub-item">配置文件</span>
+                                    </a>
+                                </li>
+                                <li>
+                                    <a href="#" onclick="$('#innerContent').load('ClearData')">
+                                        <span class="sub-item">清空数据表</span>
+                                    </a>
+                                </li>
+                            </ul>
+                        </div>
+                    </li>
+                    {%endif%}
+                    <li class="nav-item">
+                        <a data-toggle="collapse" href="#tables">
+                            <i class="fas fa-table"></i>
+                            <p>帮助</p>
+                            <span class="caret"></span>
+                        </a>
+                        <div class="collapse" id="tables">
+                            <ul class="nav nav-collapse">
+                                <li>
+                                    <a href="#" onclick="$('#innerContent').load('help')">
+                                        <span class="sub-item">帮助文档</span>
+                                    </a>
+                                </li>
+                                <li>
+                                    <a href="#" onclick="$('#innerContent').load('Disclaimer')">
+                                        <span class="sub-item">免责声明</span>
+                                    </a>
+                                </li>
+                                <li>
+                                    <a href="#" onclick="$('#innerContent').load('license')">
+                                        <span class="sub-item">许可协议</span>
+                                    </a>
+                                </li>
+                            </ul>
+                        </div>
+                    </li>
+                    <li class="mx-4 mt-2">
+                        <a href="#"  onclick="$('#innerContent').load('donate')" class="btn btn-primary btn-block"><span class="btn-label mr-2"> <i
+                                class="fa fa-heart"></i> </span>捐赠</a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </div>
+    <!-- End Sidebar -->
+
+    <div class="main-panel">
+        <div class="content" id="innerContent">
+
+        </div>
+        <footer class="footer">
+            <div class="container-fluid">
+                <div class="copyright ml-auto">
+                    Copyright &copy; 2020-2021. ALC-Studio All rights reserved.<a class="btn btn-link" target="_blank"
+                                                                                  href="https://www.zunmx.top/">-ALC-</a>
+                </div>
+            </div>
+        </footer>
+    </div>
+
+</div>
+</body>
+<script type="text/javascript">
+
+    !function (e, t, a) {
+        function r() {
+            for (var e = 0; e < s.length; e++) s[e].alpha <= 0 ? (t.body.removeChild(s[e].el), s.splice(e, 1)) : (s[e].y--, s[e].scale += .004, s[e].alpha -= .013, s[e].el.style.cssText = "left:" + s[e].x + "px;top:" + s[e].y + "px;opacity:" + s[e].alpha + ";transform:scale(" + s[e].scale + "," + s[e].scale + ") rotate(45deg);background:" + s[e].color + ";z-index:99999");
+            requestAnimationFrame(r)
+        }
+
+        function n() {
+            var t = "function" == typeof e.onclick && e.onclick;
+            e.onclick = function (e) {
+                t && t(), o(e)
+            }
+        }
+
+        function o(e) {
+            var a = t.createElement("div");
+            a.className = "heart", s.push({
+                el: a,
+                x: e.clientX - 5,
+                y: e.clientY - 5,
+                scale: 1,
+                alpha: 1,
+                color: c()
+            }), t.body.appendChild(a)
+        }
+
+        function i(e) {
+            var a = t.createElement("style");
+            a.type = "text/css";
+            try {
+                a.appendChild(t.createTextNode(e))
+            } catch (t) {
+                a.styleSheet.cssText = e
+            }
+            t.getElementsByTagName("head")[0].appendChild(a)
+        }
+
+        function c() {
+            return "rgb(" + ~~(255 * Math.random()) + "," + ~~(255 * Math.random()) + "," + ~~(255 * Math.random()) + ")"
+        }
+
+        var s = [];
+        e.requestAnimationFrame = e.requestAnimationFrame || e.webkitRequestAnimationFrame || e.mozRequestAnimationFrame || e.oRequestAnimationFrame || e.msRequestAnimationFrame || function (e) {
+            setTimeout(e, 1e3 / 60)
+        }, i(".heart{width: 10px;height: 10px;position: fixed;background: #f00;transform: rotate(45deg);-webkit-transform: rotate(45deg);-moz-transform: rotate(45deg);}.heart:after,.heart:before{content: '';width: inherit;height: inherit;background: inherit;border-radius: 50%;-webkit-border-radius: 50%;-moz-border-radius: 50%;position: fixed;}.heart:after{top: -5px;}.heart:before{left: -5px;}"), n(), r()
+    }(window, document);
+
+</script>
+<!--   Core JS Files   -->
+<script src="{% static '/js/jquery.3.2.1.min.js'%}"></script>
+<script src="{% static '/js/popper.min.js'%}"></script>
+<script src="{% static '/js/bootstrap.min.js'%}"></script>
+<!-- jQuery UI -->
+<script src="{% static '/js/jquery-ui.min.js'%}"></script>
+<script src="{% static '/js/jquery.ui.touch-punch.min.js'%}"></script>
+<!-- jQuery Scrollbar -->
+<script src="{% static '/js/jquery.scrollbar.min.js'%}"></script>
+<!-- Chart JS -->
+<script src="{% static '/js/chart.min.js'%}"></script>
+<!-- jQuery Sparkline -->
+<script src="{% static '/js/jquery.sparkline.min.js'%}"></script>
+<!-- Chart Circle -->
+<script src="{% static '/js/circles.min.js'%}"></script>
+<!-- Datatables -->
+<script src="{% static '/js/datatables.min.js'%}"></script>
+<!-- Bootstrap Notify -->
+<script src="{% static '/js/bootstrap-notify.min.js'%}"></script>
+<!-- Sweet Alert -->
+<script src="{% static '/js/sweetalert.min.js'%}"></script>
+<!-- Atlantis JS -->
+<script src="{% static '/js/atlantis.min.js'%}"></script>
+<script src="{% static '/js/auto-line-number.js'%}"></script>
+<script src="{% static '/js/jquery.cookie.js'%}"></script>
+</html>

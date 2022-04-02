@@ -1,0 +1,186 @@
+<div class="page-inner">
+    <h4 class="page-title text-danger">清空数据表</h4>
+    <div class="row">
+        <div class="col-sm-8 col-md-12">
+            <div class="card card-stats card-round">
+                <div class="card-body">
+                    <div class="row">
+                        <div class="col-1">
+                            <div class="icon-big text-center icon-danger bubble-shadow-small">
+                                <i class="la flaticon-alarm-1 text-warning"></i>
+                            </div>
+                        </div>
+                        <div class="col-7 col-stats">
+                            <div class="numbers">
+                                <p class="card-category text-danger">警告！</p>
+                                <h4 class="card-title text-warning">此操作将会具有破坏性，请明确此操作带来的结果。</h4>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="col-sm-8 col-md-12">
+            <div class="card">
+                <div class="card-header">
+                    <h3 class="card-title text-warning">请选择要清空的数据表</h3>
+                </div>
+
+
+                <div class="card-body">
+                    <div class="selectgroup selectgroup w-100">
+                        <label class="selectgroup-item">
+                            <input type="checkbox" name="value" value="godeyes_http" class="selectgroup-input">
+                            <span class="selectgroup-button"
+                                  title="对应的godeyes_http表，存放的是数据中心中HTTP的数据">HTTP以及HTTPS协议数据表</span>
+                        </label>
+
+                        <label class="selectgroup-item">
+                            <input type="checkbox" name="value" value="godeyes_mysql" class="selectgroup-input">
+                            <span class="selectgroup-button"
+                                  title="对应的godeyes_mysql表，存放的是数据中心中MySQL的数据">MySQL协议数据表</span>
+                        </label>
+
+
+                        <label class="selectgroup-item">
+                            <input type="checkbox" name="value" value="godeyes_telnet" class="selectgroup-input">
+                            <span class="selectgroup-button"
+                                  title="对应的godeyes_telnet表，存放的是数据中心中telnet的数据">TELNET协议数据表</span>
+                        </label>
+
+                        <label class="selectgroup-item">
+                            <input type="checkbox" name="value" value="godeyes_ssh" class="selectgroup-input">
+                            <span class="selectgroup-button" title="对应的godeyes_ssh表，存放的是数据中心中SSH的数据">SSH协议数据表</span>
+                        </label>
+
+                        <label class="selectgroup-item">
+                            <input type="checkbox" name="value" value="godeyes_slog" class="selectgroup-input">
+                            <span class="selectgroup-button" title="对应的godeyes_slog表，存放的是系统访问以及操作的数据">系统日志表</span>
+                        </label>
+
+                        <label class="selectgroup-item">
+                            <input type="checkbox" name="value" value="godeyes_log" class="selectgroup-input">
+                            <span class="selectgroup-button" title="对应的godeyes_log表，存放的是扫描器执行的日志数据">扫描器日志表</span>
+                        </label>
+
+                        <label class="selectgroup-item">
+                            <input type="checkbox" name="value" value="godeyes_ipdb" class="selectgroup-input">
+                            <span class="selectgroup-button" title="对应的godeyes_ipdb表，存放的是全球IP地址与地理地址的对应法则，与扫描器匹配相关">IP数据表</span>
+                        </label>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+        <br/>
+        <div class="col-sm-8 col-md-12">
+            <p>
+            <p class="form-control text-primary">HTTP以及HTTPS协议数据表: 对应的godeyes_http表，存放的是数据中心中HTTP的数据，其中的数据为扫描器扫描获得</p>
+            <p class="form-control text-primary">MySQL协议数据表: 对应的godeyes_mysql表，存放的是数据中心中MySQL的数据，其中的数据为扫描器扫描获得</p>
+            <p class="form-control text-primary">TELNET协议数据表: 对应的godeyes_telnet表，存放的是数据中心中telnet的数据，其中的数据为扫描器扫描获得</p>
+            <p class="form-control text-primary">SSH协议数据表: 对应的godeyes_ssh表，存放的是数据中心中SSH的数据，其中的数据为扫描器扫描获得</p>
+            <p class="form-control text-primary">系统日志表: 对应的godeyes_slog表，存放的是系统访问以及操作的数据，其中的数据为系统操作获得</p>
+            <p class="form-control text-primary">扫描器日志表: 对应的godeyes_log表，存放的是扫描器执行的日志数据，其中的数据为扫描器扫描获得</p>
+            <p class="form-control text-primary">IP数据表:
+                对应的godeyes_ipdb表，存放的是全球IP地址与地理地址的对应法则，与扫描器匹配相关，其中的数据为IP模块在线同步获得</p>
+            </p>
+        </div>
+        <div class="card card-pricing col-md-12" style="text-align:center;">
+            <div class="form-check">
+                <label class="form-check-label">
+                    <input class="form-check-input" type="checkbox" value="" id="checkIKNOW" disabled
+                           onclick="buttonOper()">
+                    <span class="form-check-sign" id="iknowTips">我很清楚我在做什么。(10)</span>
+                </label>
+            </div>
+            <button class="btn btn-danger" disabled id="deleteButton" onclick="toClearTables()">
+            <span class="btn-label">
+                <i class="la flaticon-interface-5 "></i>
+            </span>
+                删除选中项对应的数据表
+            </button>
+        </div>
+    </div>
+</div>
+
+<script type="text/javascript">
+    function buttonOper() {
+        $("#deleteButton").prop("disabled", !$("#checkIKNOW").prop("checked"))
+
+    }
+
+    $(function () {
+        var num = 10;
+        var handle = setInterval(function () {
+            $("#iknowTips").text("我很清楚我在做什么。(" + --num + ")")
+            if (num == 0) {
+                $("#iknowTips").text("我很清楚我在做什么。")
+                $("#checkIKNOW").prop("disabled", false)
+                clearInterval(handle)
+            }
+        }, 1000)
+    })
+
+    function toClearTables() {
+
+        var checked = $("[name=value]:checked");
+        var rst = "";
+        $.each(checked, function (index, value) {
+            rst += "," + value.value
+        })
+        rst = rst.substring(1)
+
+
+        swal({
+            title: '确定要删除以下数据表',
+            icon: "warning",
+            text: rst,
+            buttons: {
+                confirm: {
+                    text: '确定!',
+                    className: 'btn btn-success'
+                },
+                cancel: {
+                    text: '取消',
+                    visible: true,
+                    className: 'btn btn-danger'
+                }
+            }
+        }).then((confirm) => {
+            if (confirm) {
+                var text = ajax_setInfo('clearDataTable', rst);
+                ServerError(text)
+                $.each(text, function (i, item) {
+                    if (item.code === 0) {
+                        swal({
+                            title: '请求成功',
+                            text: item.detail,
+                            icon: 'success',
+                            timer: 5000,
+                            buttons: false
+                        });
+                    } else {
+                        swal({
+                            title: '请求成功',
+                            text: item.detail,
+                            icon: 'error',
+                            timer: 1000,
+                            buttons: false
+                        });
+                    }
+                    getUserList()
+
+                })
+
+            } else {
+                swal({
+                    title: '取消操作',
+                    text: '用户取消操作',
+                    timer: 200,
+                    buttons: false,
+                });
+            }
+        });
+
+    }
+</script>

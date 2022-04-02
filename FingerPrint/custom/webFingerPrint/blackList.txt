@@ -1,0 +1,69 @@
+server
+h2
+unknown
+self
+en-US
+br
+W/"211-16c87a614ce"
+Basic realm=""
+text; charset=plain
+accept-language,accept-charset
+hop_count=1
+bfe
+"59005463-52e"
+h1
+1.13.35.2-0
+CP=CAO PSA OUR
+"608610b1-23c"
+Basic realm="."
+content-length
+none
+"1506772138:62bc"
+timeout=20
+timeout=60
+elb
+accept-ranges
+text/html
+noopen
+1.0
+deny
+max-age
+ie=9
+cookie
+h2,h2c
+delete,post,put,get,options
+content-encoding
+bytes
+-1
+chunked
+gzip
+date
+no-store
+max-age=0
+None
+connection
+no-cache
+close
+-
+en
+keep-alive
+text/html; charset="utf-8"
+*
+sameorigin
+0
+nosniff
+content-type
+text/plain
+accept-encoding
+w/"59005463-52e"
+no
+private
+zh-cn
+unknown
+W/"6084e4cd-1867"
+Upgrade, close
+IE=edge
+ERR_INVALID_URL 0
+true
+false
+6c0ac29e643290333

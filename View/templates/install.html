@@ -1,0 +1,392 @@
+<!DOCTYPE html>
+{% load static %}
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>God Eyes 安装向导</title>
+    <meta http-equiv="X-UA-Compatible" content="IE=edge"/>
+    <title>Home</title>
+    <meta content='width=device-width, initial-scale=1.0, shrink-to-fit=no' name='viewport'/>
+    <script src="{% static 'js/webfont.min.js'%}"></script>
+    <script src="{% static '/js/sweetalert.min.js'%}"></script>
+    <script src="{% static 'js/jquery.3.2.1.min.js'%}"></script>
+    <script src="{% static 'js/circles.min.js'%}"></script>
+    <script src="{% static '/js/jquery.cookie.js'%}"></script>
+    <link rel="stylesheet" href="{% static 'css/bootstrap.min.css'%}">
+    <link rel="stylesheet" href="{% static 'css/atlantis.min.css'%}">
+    <link rel="stylesheet" href="{% static 'css/manager.css'%}">
+
+    <script>
+        WebFont.load({
+            google: {"families": ["Lato:300,400,700,900"]},
+            custom: {
+                "families": ["Flaticon", "Font Awesome 5 Solid", "Font Awesome 5 Regular", "Font Awesome 5 Brands", "simple-line-icons"],
+                urls: ["{% static 'js/fonts.min.css'%}"]
+            },
+            active: function () {
+                sessionStorage.fonts = true;
+            }
+        });
+    </script>
+</head>
+<body data-background-color="dark">
+<div style="height: 80%;width: 80%; position: absolute;left: 10%;top: 10%" id="innerContent">
+
+
+</div>
+</body>
+<script>
+    GEinstallpage(1); //默认第一页
+    var num = 10;
+    var handle = setInterval(function () {
+        $("#iAgree").text("我同意以上协议，并且保证合法使用。(" + String(--num) + ")")
+        if (num === 0) {
+            $("#iAgree").text("我同意以上协议，并且保证合法使用。").prop("disabled", false)
+            clearInterval(handle)
+        }
+    }, 1000)
+
+    function checkDB(show = true) {
+        var dburl = $("#dbURL").val()
+        var dbPort = $("#dbPort").val()
+        var dbuser = $("#user").val()
+        var dbpwd = $("#password").val()
+
+        var defer = $.Deferred();
+        $.ajax({
+            type: "get",
+            url: "/manager/get_data",
+            data: {
+                "req": "install",
+                "code": "checkDBLink",
+                "arg1": dburl+':'+dbPort,
+                "arg2": dbuser,
+                "arg3": dbpwd,
+            },
+            timeout: 6000,
+            xhrFields: {
+                withCredentials: true // 发送Ajax时，Request header中会带上 Cookie 信息。
+            },
+            crossDomain: true, // 发送Ajax时，Request header 中会包含跨域的额外信息，但不会含cookie（作用不明，不会影响请求头的携带）
+            success: function (data) {
+                if (data) {
+                    if (show) {
+                        swal({
+                            title: '成功',
+                            text: "数据库连接成功",
+                            icon: 'success',
+                            timer: 5000,
+                        });
+                    }
+                } else {
+                    if (show) {
+                        swal({
+                            title: '失败',
+                            text: '数据库连接失败，请检查地址、用户名及密码',
+                            icon: 'error',
+                            timer: 5000,
+                        });
+                    }
+
+                    defer.resolve(data)
+                }
+            }
+        });
+        return defer.promise();
+    }
+
+    function preInstall() {
+        if (checkDB(false)) {
+            var dbname = $("#db").val()
+            var GEuser = $("#GEuser").val()
+            var GEpwd = $("#GEpwd").val()
+            var dbPort = $("#dbPort").val()
+            if (String(dbname).trim() == "") {
+                dbname = "godeyes"
+            }
+            if (String(GEuser).trim() == "") {
+                swal({
+                    title: '失败',
+                    text: '用户名不合法',
+                    icon: 'error',
+                    timer: 5000,
+                });
+                return;
+            }
+            if (String(GEpwd).trim() == "" || String(GEpwd).length < 6) {
+                swal({
+                    title: '失败',
+                    text: '密码不合法',
+                    icon: 'error',
+                    timer: 5000,
+                });
+                return;
+            }
+        } else {
+            swal({
+                title: '失败',
+                text: '数据库连接失败，请检查地址、用户名及密码',
+                icon: 'error',
+                timer: 5000,
+            });
+            return ;
+        }
+        var dburl = $("#dbURL").val()+":"+$("#dbPort").val()
+        var dbuser = $("#user").val()
+        var dbpwd = $("#password").val()
+        var dbname = $("#db").val()
+        var GEuser = $("#GEuser").val()
+        var GEpwd = $("#GEpwd").val()
+        if (dbname == '') {
+            dbname = 'godeyes'
+        }
+        var config = {
+            'url': dburl +":"+ dbPort,
+            'dbuser': dbuser,
+            'dbpwd': dbpwd,
+            'dbname': dbname,
+            'geuser': GEuser,
+            'gepwd': GEpwd
+        }
+        var h = setInterval(function () {
+            $.ajax({
+                type: "get",
+                url: "/manager/get_data",
+                // async: false,
+                data: {
+                    "req": "install",
+                    "code": "getStatus",
+                    "arg1": '',
+                    "arg2": '',
+                    "arg3": ''
+                },
+                timeout: 600000,
+                xhrFields: {
+                    withCredentials: true // 发送Ajax时，Request header中会带上 Cookie 信息。
+                },
+                crossDomain: true, // 发送Ajax时，Request header 中会包含跨域的额外信息，但不会含cookie（作用不明，不会影响请求头的携带）
+                success: function (backData) {
+                    swal({
+                        title: "进行中，期间请勿操作",
+                        text: backData,
+                        icon: "info",
+                        button: false,
+                        closeOnClickOutside: false,
+                        closeOnEsc: false
+                    });
+                }
+            });
+        }, 1000)
+        setTimeout(function () {
+            $.ajaxSetup({
+                data: {csrfmiddlewaretoken: $.cookie('csrftoken')}
+            })
+            $.ajax({
+                type: "post",
+                url: "/manager/set_data",
+                async: true,
+                data: {
+                    "req": "install",
+                    "code": JSON.stringify(config),
+                    "arg1": " ",
+                    "arg2": " ",
+                    "arg3": " "
+                },
+                xhrFields: {
+                    withCredentials: true // 发送Ajax时，Request header中会带上 Cookie 信息。
+                },
+                crossDomain: true, // 发送Ajax时，Request header 中会包含跨域的额外信息，但不会含cookie（作用不明，不会影响请求头的携带）
+                success: function (data) {
+                    if (data) {
+                        Circles.create({
+                            id: 'task-complete',
+                            radius: 120,
+                            value: 100,
+                            maxValue: 100,
+                            width: 15,
+                            text: function (value) {
+                                return value + '%';
+                            },
+                            colors: ['#36a3f7', '#fff'],
+                            duration: 10,
+                            wrpClass: 'circles-wrp',
+                            textClass: 'circles-text',
+                            styleWrapper: true,
+                            styleText: true
+
+                        })
+                        clearInterval(h)
+                        swal({
+                            title: "安装成功",
+                            text: '即将跳转到登录页面',
+                            icon: "info",
+                            button: true,
+                            closeOnClickOutside: false,
+                            closeOnEsc: false
+                        });
+                        setTimeout(function () {
+                            var urlPath = window.document.location.href;
+                            var docPath = window.document.location.pathname;
+                            var index = urlPath.indexOf(docPath);
+                            location.href = urlPath.substring(0, index);
+                        },1000)
+                    }
+                },
+            });
+        }, 1000)
+        GEinstallpage(3);
+
+    }
+
+    function processing() {
+        "use strict";
+        // Cicle Chart
+        Circles.create({
+            id: 'task-complete',
+            radius: 120,
+            value: 50,
+            maxValue: 100,
+            width: 15,
+            text: function (value) {
+                return value + '%';
+            },
+            colors: ['#36a3f7', '#fff'],
+            duration: 30000,
+            wrpClass: 'circles-wrp',
+            textClass: 'circles-text',
+            styleWrapper: true,
+            styleText: true
+        })
+    }
+
+    function GEinstallpage(page) {
+        console.log(page)
+        switch (page) {
+            case 1:
+                $("#innerContent").html("<div style=\"height: 80%;width: 80%; position: absolute;left: 10%;top: 10%\">\n" +
+                    "    <div class=\"col-md-12\">\n" +
+                    "        <div class=\"card\" id=\"page1\">\n" +
+                    "            <div class=\"card-header\">\n" +
+                    "                <h4 class=\"card-title\">God Eyes 安装向导</h4>\n" +
+                    "                <div class=\"card-body\">\n" +
+                    "                    <h4 class=\"text-danger\">本工具仅限于安全研究与教学使用，用户使用本工具所造成的所有后果，由用户承担全部法律及连带责任！作者不承担任何法律及连带责任。</h4>\n" +
+                    "                    <h4 class=\"text-danger\">当您使用本工具起，默认同意了此协议，如果您不同意此协议，请删除本工具以及连带的数据库文件。</h4>\n" +
+                    "                    <h4 class=\"text-secondary\">\n" +
+                    "                        0. 没有授权的渗透属于违法行为。\n" +
+                    "                    </h4>\n" +
+                    "                    <h4 class=\"text-secondary\">\n" +
+                    "                        1. 使用者必须具备法律基础和网络基础，没有授权的渗透均为非法入侵。\n" +
+                    "                    </h4>\n" +
+                    "                    <h4 class=\"text-secondary\">\n" +
+                    "                        2. 使用者必须心智成熟，拥有明辨是非能力，如果因为使用者个人造成的法律责任，本工具作者不承担任何责任。\n" +
+                    "                    </h4>\n" +
+                    "                    <h4 class=\"text-secondary\">\n" +
+                    "                        3. 本系统为本人的毕业设计，由于开发经验不足，安全性不能保障（世界上没有绝对安全的系统），因此数据信息的泄露造成的一切后果与作者本人没有任何关系。\n" +
+                    "                    </h4>\n" +
+                    "                    <h4 class=\"text-secondary\">\n" +
+                    "                        4. 由于用户将个人密码告知他人或与他人共享注册账户，由此导致的任何信息泄露，本网站不负任何责任。\n" +
+                    "                    </h4>\n" +
+                    "                    <h4 class=\"text-secondary\">\n" +
+                    "                        5. 本工具包含破解模块，仅用于局域网设备的安全审查，它用造成的一切后果作者不承担一切责任。\n" +
+                    "                    </h4>\n" +
+                    "                    <h4 class=\"text-secondary\">\n" +
+                    "                        6. 任何由于黑客攻击、计算机病毒侵入或发作、因政府管制而造成的暂时性关闭等影响网络正常经营的不可抗力而造成的个人资料泄露、丢失、被盗用或被窜改等，本网站均得免责。\n" +
+                    "                    </h4>\n" +
+                    "                    <h4 class=\"text-secondary\">\n" +
+                    "                        7. 本网站之声明以及其修改权、更新权及最终解释权均属所有。\n" +
+                    "                    </h4>\n" +
+                    "                    <h4 class=\"text-secondary\">\n" +
+                    "                        8. 本项目目前属于试运营阶段，请合法使用，本工具虽提供具有攻击性的功能，但是用于企业内部网络的安全审查，如果对外网进行操作，后果自负，与作者本人没有任何关系。\n" +
+                    "                    </h4>\n" +
+                    "                    <button class=\"btn btn-danger col-md-6 ml-auto mr-auto\" style=\"left: 20%;text-align: center\"\n" +
+                    "                            id=\"iAgree\" disabled\n" +
+                    "                            onclick=\"GEinstallpage(2)\">\n" +
+                    "                        我同意以上协议，并且保证合法使用\n" +
+                    "                    </button>\n" +
+                    "                </div>\n" +
+                    "            </div>\n" +
+                    "        </div>\n" +
+                    "    </div>\n" +
+                    "</div>")
+                break;
+            case 2:
+                $("#innerContent").html("    <div class=\"col-md-12\">\n" +
+                    "        <div class=\"card\" id=\"page1\">\n" +
+                    "            <div class=\"card-header\">\n" +
+                    "                <h4 class=\"card-title\">God Eyes 安装向导</h4>\n" +
+                    "                <div class=\"card-body\">\n" +
+                    "                    <div class=\"form-group\">\n" +
+                    "                        <label for=\"dbURL\">数据库地址：</label>\n" +
+                    "                        <div class=\"input-group mb-6\">\n" +
+                    "                            <input type=\"text\" class=\"form-control\" id=\"dbURL\" aria-describedby=\"basic-addon3\"\n" +
+                    "                                   placeholder=\"例如：localhost、127.0.0.1、123.56.220.252\">\n" +
+                    "                        </div>\n" +
+                    "                    </div>\n" +
+                    "                    <div class=\"form-group\">\n" +
+                    "                        <label for=\"dbPort\">数据库端口：</label>\n" +
+                    "                        <div class=\"input-group mb-6\">\n" +
+                    "                            <input type=\"text\" class=\"form-control\" id=\"dbPort\" aria-describedby=\"basic-addon3\"\n" +
+                    "                                   placeholder=\"例如：3306\">\n" +
+                    "                        </div>\n" +
+                    "                    </div>\n" +
+                    "                    <div class=\"form-group\">\n" +
+                    "                        <label for=\"user\">数据库用户：</label>\n" +
+                    "                        <div class=\"input-group mb-6\">\n" +
+                    "                            <input type=\"text\" class=\"form-control\" id=\"user\" aria-describedby=\"basic-addon3\"\n" +
+                    "                                   placeholder=\"您数据库的用户名\">\n" +
+                    "                        </div>\n" +
+                    "                    </div>\n" +
+                    "                    <div class=\"form-group\">\n" +
+                    "                        <label for=\"password\">数据库密码：</label>\n" +
+                    "                        <div class=\"input-group mb-6\">\n" +
+                    "                            <input type=\"password\" class=\"form-control\" id=\"password\" aria-describedby=\"basic-addon3\"\n" +
+                    "                                   placeholder=\"您数据库的密码\">\n" +
+                    "                        </div>\n" +
+                    "                    </div>\n" +
+                    "                    <div class=\"form-group\">\n" +
+                    "                        <label for=\"db\">数据库名称</label>\n" +
+                    "                        <div class=\"input-group mb-6\">\n" +
+                    "                            <input type=\"text\" class=\"form-control\" id=\"db\" aria-describedby=\"basic-addon3\"\n" +
+                    "                                   placeholder=\"您希望GodEyes使用数据库名称是什么(默认godeyes)\">\n" +
+                    "                        </div>\n" +
+                    "                    </div>\n" +
+                    "                    <div class=\"form-group\">\n" +
+                    "                        <label for=\"GEuser\">默认管理员的用户名</label>\n" +
+                    "                        <div class=\"input-group mb-6\">\n" +
+                    "                            <input type=\"text\" class=\"form-control\" id=\"GEuser\" aria-describedby=\"basic-addon3\"\n" +
+                    "                                   placeholder=\"您希望GodEyes账号是什么？\">\n" +
+                    "                        </div>\n" +
+                    "                    </div>\n" +
+                    "                    <div class=\"form-group\">\n" +
+                    "                        <label for=\"GEpwd\">默认管理员的密码</label>\n" +
+                    "                        <div class=\"input-group mb-6\">\n" +
+                    "                            <input type=\"password\" class=\"form-control\" id=\"GEpwd\" aria-describedby=\"basic-addon3\"\n" +
+                    "                                   placeholder=\"您希望GodEyes密码是什么，密码至少六位？\">\n" +
+                    "                        </div>\n" +
+                    "                    </div>\n" +
+                    "                    <button class=\"btn btn-success col-md-3 ml-auto mr-auto\" style=\"left: 20%;text-align: center\"\n" +
+                    "                            id=\"check\" onclick=\"checkDB()\">校验\n" +
+                    "                    </button>\n" +
+                    "                    <button class=\"btn btn-danger col-md-3 ml-auto mr-auto\" style=\"left: 20%;text-align: center\"\n" +
+                    "                            id=\"setup\" onclick=\"preInstall()\">安装\n" +
+                    "                    </button>\n" +
+                    "                </div>\n" +
+                    "            </div>\n" +
+                    "        </div>\n" +
+                    "    </div>")
+                break;
+            case 3:
+                $("#innerContent").html("    <div class=\"card-body\">\n" +
+                    "        <div class=\"card card-primary bg-primary-gradient\">\n" +
+                    "            <div class=\"card-body\">\n" +
+                    "                <h1 class=\"mb-1 fw-bold\">系统安装中。。。</h1><br/><br/> \n" +
+                    "                <div id=\"task-complete\" class=\"chart-circle mt-12 mb-12\"></div><br/><br/>\n" +
+                    "            </div>\n" +
+                    "        </div>\n" +
+                    "\n" +
+                    "    </div>")
+                processing();
+        }
+    }
+</script>
+</html>

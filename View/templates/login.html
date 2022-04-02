@@ -1,0 +1,92 @@
+<!doctype html>
+{% load static %}
+<html>
+<head>
+    <meta http-equiv="pragma" content="no-cache">
+    <meta http-equiv="cache-control" content="no-cache">
+    <meta http-equiv="expires" content="0">
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+    <title>{{title}} </title>
+    <link rel="stylesheet" href="{% static 'css/log.css'%}">
+    <script src="{% static 'js/jquery.3.2.1.min.js'%}"></script>
+</head>
+<body>
+<div id="drops" style="position:absolute; left:0; top:0 ;height:100%; width:100%    ">
+    <form class="form-login" method="post" action="/login/">
+        <div class="logo"></div>
+        </br>
+        <div class="form-item">
+            <label for="usr"></label><input id="usr" name='username' type="text" placeholder="账户" value="">
+        </div>
+        <div class="form-item">
+            <label for="psw"></label><input id="psw" name='password' type="password" placeholder="密码" value="">
+        </div>
+        <div class="form-item">
+            <button id="submit" name="login" type="submit" value="登 录">登 录</button>
+        </div>
+        {% csrf_token %}
+    </form>
+</div>
+</body>
+<script type="text/javascript">
+    console.clear();
+
+    const drops = 25;
+    const dropsContainer = document.querySelector("#drops");
+
+    dropsContainer.onmousemove = (e) => {
+        mousePositionX = Math.floor(
+            map(e.clientX, 0, dropsContainer.offsetWidth, 10, -10)
+        );
+        if (
+            dropsContainer.style.getPropertyValue("--mouse-value") !== mousePositionX
+        ) {
+            dropsContainer.style.setProperty("--mouse-value", mousePositionX);
+            dropsContainer.style.setProperty(
+                "--mouse-position",
+                `${mousePositionX}rem`
+            );
+            dropsContainer.style.setProperty("--rotation", `${mousePositionX}deg`);
+        }
+    };
+
+    const createDrop = () => {
+        const drop = document.createElement("div");
+        drop.classList.add("drop");
+        const rand = getRandomInt(3, 5);
+        const randPosition = getRandomInt(-150, dropsContainer.offsetWidth + 150);
+        const dropTime = getRandomInt(2, 4);
+        const dropHeight = getRandomInt(3, 7);
+        drop.style.setProperty("--left", `${randPosition}px`);
+        drop.style.setProperty("--time", `.${rand}s`);
+        drop.style.setProperty("--opacity", `.${rand}`);
+        drop.style.setProperty("--drop-time", `.${dropTime}s`);
+        drop.style.setProperty("--drop-height", `${dropHeight}rem`);
+        drop.onanimationend = (animation) => {
+            if (animation.animationName === "drop") {
+                drop.classList.add("splash");
+                drop.classList.remove("drop");
+                createDrop();
+            } else {
+                drop.remove();
+            }
+        };
+        dropsContainer.append(drop);
+    };
+
+    Array(drops)
+        .fill(1)
+        .forEach(() => {
+            createDrop();
+        });
+
+    function getRandomInt(min, max) {
+        return Math.floor(Math.random() * (max - min)) + min;
+    }
+
+    function map(value, istart, istop, ostart, ostop) {
+        return ostart + (ostop - ostart) * ((value - istart) / (istop - istart));
+    }
+
+</script>
+</html>

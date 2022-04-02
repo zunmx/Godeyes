@@ -1,0 +1,89 @@
+<script>
+    $(function () {
+        $('input').click(function (e) {
+            e.stopPropagation();//阻止其继续冒泡
+        })
+        getUserList()
+    })
+
+
+</script>
+
+
+<div class="modal fade" id="modifyUser" tabindex="-1" role="dialog" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content" style="background-color: #1b2136">
+            <div class="modal-header no-bd">
+                <h5 class="modal-title">
+                    <span class="fw-normal" id="mod-title">修改用户信息</span>
+                </h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true" onclick="hiddenEditUser()">×</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <p class="small">填写用户信息</p>
+                <form>
+                    <div class="row">
+                        <div class="col-sm-12">
+                            <div class="form-group form-group-default">
+                                用户名<input type="text" class="form-control" name="username" id="mod-username" readonly
+                                          placeholder="username">
+                            </div>
+                            <div class="form-group form-group-default">
+                                密码 <input type="password" class="form-control" name="password" id="mod-password"
+                                          placeholder="password">
+                            </div>
+                            <div class="form-group form-group-default">
+                                确认密码 <input type="password" class="form-control" name="repassword" id="mod-repassword"
+                                            placeholder="repassword">
+                            </div>
+                            <div class="form-group form-group-default">
+                                权限<select name="power" class="form-control input-solid" id="mod-power">
+                                <option value="SupserAdmin" id="mod-super">超级管理员</option>
+                                <option value="Vistor" id="mod-vistor">访客</option>
+                            </select>
+                            </div>
+                        </div>
+                    </div>
+                </form>
+            </div>
+            <div class="modal-footer no-bd">
+                <button type="button" id="addRowButton" class="btn btn-primary" onclick="saveUser()">保存</button>
+                <button type="button" class="btn btn-danger" data-dismiss="modal" onclick="hiddenEditUser()">关闭</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="col-md-12">
+    <div class="card">
+        <div class="card-header">
+            <h4 class="card-title">用户列表</h4>
+            <a>管理员账户至少一个，其它不做要求，建议密码定期更改。 </a>
+            <button class="btn btn-secondary" style="float:right" onclick="addUser();">
+                    <span class="btn-label">
+                        <i class="fa fa-plus"></i>
+                        添加用户
+                    </span>
+            </button>
+        </div>
+        <div class="card-body">
+            <div class="table-responsive">
+                <table id="basic-datatables" class="display table table-striped table-hover">
+                    <thead>
+                    <tr>
+                        <th>用户名</th>
+                        <th>密码</th>
+                        <th>级别</th>
+                        <th>操作</th>
+                    </tr>
+                    </thead>
+                    <tbody id="userList">
+
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>

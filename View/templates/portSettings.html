@@ -1,0 +1,134 @@
+{% load static %}
+<script src="{% static '/js/atlantis.min.js'%}"></script>
+<script>
+    $(document).ready(function () {
+
+        getScannerPorts('all', 'json', 'portSettings');
+        $("#telnetList").setTextareaCount({
+            width: "35px",
+            bgColor: "#263253",
+            color: "#FFF",
+            display: "inline-block"
+        });
+        $("#httpsList").setTextareaCount({
+            width: "35px",
+            bgColor: "#263253",
+            color: "#FFF",
+            display: "inline-block"
+        });
+        $("#mysqlList").setTextareaCount({
+            width: "35px",
+            bgColor: "#263253",
+            color: "#FFF",
+            display: "inline-block"
+        });
+        $("#sshList").setTextareaCount({
+            width: "35px",
+            bgColor: "#263253",
+            color: "#FFF",
+            display: "inline-block"
+        });
+
+    });
+</script>
+
+<div class="row row-card-no-pd">
+    <div class="col-md-12">
+        <div class="card">
+            <div class="card-body">
+                <div class="card">
+                    <div class="card-header">
+                        <div class="card-head-row">
+                            <h4 class="card-title">待扫描的端口号</h4>
+                            <div class="card-tools">
+                                <button class="btn btn-icon btn-link btn-primary btn-xs btn-refresh-card"
+                                        onclick="getScannerPorts('all', 'json', 'portSettings');">
+                                    <span class="fa fa-sync-alt"></span></button>
+                            </div>
+                        </div>
+                        <p class="card-category" id="info_i">
+                            以下是针对于不同协议的端口号，每一行为一个端口号。</p>
+                    </div>
+                </div>
+                <div class="table-responsive">
+                    <div id="basic-datatables_wrapper" class="dataTables_wrapper container-fluid dt-bootstrap4">
+
+                        <div class="row">
+                            <div class="col-sm-3">
+                                <div class="input-group-prepend">
+                                    <span class="input-group-text"
+                                          style="width:210px;text-align:center;" id="http_title">HTTP(S)端口</span>
+                                </div>
+                                <div class="input-group">
+
+                                    <textarea class="form-control" id="httpsList" rows="25"></textarea>
+                                </div>
+                                <div class="card-action" style="text-align: center;">
+                                    <button class="btn btn-primary btn-border"
+                                            onclick="checkScannerPortInvalid('http')">检查
+                                    </button>
+                                    <button class="btn btn-secondary" type="button"
+                                            onclick="save_portList('http')">保存
+                                    </button>
+                                </div>
+                            </div>
+                            <div class="col-sm-3">
+                                <div class="input-group-prepend">
+                                        <span class="input-group-text"
+                                              style="width:210px;text-align:center;" id="mysql_title">MySQL端口</span>
+                                </div>
+                                <div class="input-group">
+                                    <textarea class="form-control" id="mysqlList" rows="25"></textarea>
+
+                                </div>
+                                <div class="card-action" style="text-align: center;">
+                                    <button class="btn btn-primary btn-border"
+                                            onclick="checkScannerPortInvalid('mysql')">检查
+                                    </button>
+                                    <button class="btn btn-secondary" type="button"
+                                            onclick="save_portList('mysql')">保存
+                                    </button>
+                                </div>
+                            </div>
+                            <div class="col-sm-3">
+                                <div class="input-group-prepend">
+                                        <span class="input-group-text"
+                                              style="width:210px;text-align:center;" id="ssh_title">Ssh端口</span>
+                                </div>
+                                <div class="input-group">
+                                    <textarea class="form-control" id="sshList" rows="25"></textarea>
+
+                                </div>
+                                <div class="card-action" style="text-align: center;">
+                                    <button class="btn btn-primary btn-border" onclick="checkScannerPortInvalid('ssh')">
+                                        检查
+                                    </button>
+                                    <button class="btn btn-secondary" type="button"
+                                            onclick="save_portList('ssh')">保存
+                                    </button>
+                                </div>
+                            </div>
+                            <div class="col-sm-3">
+                                <div class="input-group-prepend">
+                                    <span class="input-group-text"
+                                          style="width:210px;text-align:center;" id="telnet_title">Telnet端口</span>
+                                </div>
+                                <div class="input-group">
+                                    <textarea class="form-control" id="telnetList" rows="25"></textarea>
+                                </div>
+                                <div class="card-action" style="text-align: center;">
+                                    <button class="btn btn-primary btn-border"
+                                            onclick="checkScannerPortInvalid('telnet')">检查
+                                    </button>
+                                    <button class="btn btn-secondary" type="button"
+                                            onclick="save_portList('telnet')">保存
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

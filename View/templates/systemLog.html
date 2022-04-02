@@ -1,0 +1,39 @@
+{% load static %}
+
+<script>
+    $.cookie('pg', 1);
+    $('input').click(function (e) {
+        e.stopPropagation();//阻止其继续冒泡
+    })
+    $(function(){
+        getSystemLog()
+    })
+</script>
+<div class="col-md-12">
+    <div class="card">
+        <div class="card-header">
+            <h4 class="card-title">系统日志</h4>
+        </div>
+        <div class="card-body">
+            <div class="table-responsive">
+                <table id="basic-datatables" class="display table table-striped table-hover" style="width: 100%;">
+                    <thead>
+                    <tr>
+                        <th>ID</th>
+                        <th>模块</th>
+                        <th>细节</th>
+                        <th>用户</th>
+                        <th>IP</th>
+                        <th>时间</th>
+                    </tr>
+                    </thead>
+
+                    <tbody id="systemLogData">
+
+
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>

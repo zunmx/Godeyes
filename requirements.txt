@@ -1,0 +1,8 @@
+demjson==2.2.4
+requests==2.25.1
+paramiko==2.7.1
+netaddr==0.8.0
+PyMySQL==0.9.3
+urllib3==1.24.2
+Django==2.1.3
+

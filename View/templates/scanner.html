@@ -1,0 +1,107 @@
+{% load static %}
+<script src="{% static '/js/atlantis.min.js'%}"></script>
+<script>
+    $(document).ready(function () {
+        getScannerPorts('all', 'json', 'scanner');
+    });
+</script>
+
+<div class="card">
+    <div class="card-header">
+        <h4 class="card-title">综合扫描器</h4>
+
+    </div>
+    <div class="card-body">
+        <div class="form-group">
+            <div class="input-group">
+                <input type="text" class="form-control" placeholder="清输入IP地址(127.0.0.1) / CIDR块(192.168.1.0/24)"
+                       aria-label="输入需要扫描的地址或CIDR" id="ipScannerInputBox" oninput="getIpDetailsInfo()"/>
+
+                <div class="input-group-append">
+                    <button class="btn btn-primary btn-border dropdown-toggle" type="button" data-toggle="dropdown"
+                            aria-haspopup="true" aria-expanded="false">扫描选项
+                    </button>
+                    <div class="dropdown-menu" x-placement="bottom-start"
+                         style="position: absolute; transform: translate3d(144px, 43px, 0px); top: 0px; left: 0px; will-change: transform;">
+                        <a class="dropdown-item" onclick="startScanner('quicklyScan',$('#ipScannerInputBox').val())">快速扫描(仅扫描Web服务)</a>
+                        <a class="dropdown-item" onclick="startScanner('extendScan',$('#ipScannerInputBox').val())">扩展扫描(包含其它服务)</a>
+                        <div role="separator" class="dropdown-divider"></div>
+                        <a class="dropdown-item" onclick="startScanner('fullScan',$('#ipScannerInputBox').val())">完整扫描(针对性的穷举破解)</a>
+                        <div role="separator" class="dropdown-divider"></div>
+
+                            <label class="form-check" style="padding-top:0;padding-bottom:0;text-align: center;">
+                                <input class="form-check-input" type="checkbox" id="coprocessor" value="">
+                                <span class="form-check-sign" title="协助扫描模式，不记录线程，因此在线程页面没有回显，但是扫描仍在后台进行。">协扫描模式</span>
+                            </label>
+
+                        <div role="separator" class="dropdown-divider"></div>
+                        <a class="dropdown-item text-danger" style="text-align: center;" onclick="stopAllThreads()">关闭所有启动线程 </a>
+                    </div>
+                </div>
+            </div>
+            <br>
+            <h6 class="text-white pb-5" id="inputDetail">请在上方输入合法的IP或CIDR块(输入random为随机生成ipv4地址，共生成999999条ip地址)</h6>
+        </div>
+        <div class="col-md-12">
+            <div class="card">
+                <div class="card-header">
+                    <div class="card-head-row">
+                        <h4 class="card-title">已选中的端口(port)</h4>
+                        <div class="card-tools">
+                            <button class="btn btn-icon btn-link btn-primary btn-xs"
+                                    onclick="$('#innerContent').load('portSettings')">
+                                <span class="fa icon-equalizer"></span>
+                            </button>
+                        </div>
+                    </div>
+                    <p class="card-category">
+                        以下是针对于不同协议的端口号</p>
+                </div>
+                <div class="card-body">
+                    <div class="table-responsive">
+                        <div id="basic-datatables_wrapper" class="dataTables_wrapper container-fluid dt-bootstrap4">
+
+                            <div class="row">
+                                <div class="col-sm-12">
+                                    <table id="basic-datatables"
+                                           class="display table table-striped table-hover dataTable" role="grid"
+                                           aria-describedby="basic-datatables_info">
+                                        <thead>
+                                        <tr role="row">
+                                            <th class="sorting" tabindex="0" aria-controls="basic-datatables"
+                                                rowspan="1" colspan="1"
+                                                aria-label="Name: activate to sort column ascending"
+                                                style="width: 226px;">HTTP(s)
+                                            </th>
+                                            <th class="sorting" tabindex="0" aria-controls="basic-datatables"
+                                                rowspan="1" colspan="1"
+                                                aria-label="Position: activate to sort column ascending"
+                                                style="width: 226px;">MySQL
+                                            </th>
+                                            <th class="sorting" tabindex="0" aria-controls="basic-datatables"
+                                                rowspan="1" colspan="1"
+                                                aria-label="Office: activate to sort column ascending"
+                                                style="width: 226px;">SSH
+                                            </th>
+                                            <th class="sorting_asc" tabindex="0" aria-controls="basic-datatables"
+                                                rowspan="1" colspan="1"
+                                                aria-label="Age: activate to sort column descending"
+                                                style="width: 226px;" aria-sort="ascending">Telnet
+                                            </th>
+                                        </tr>
+                                        </thead>
+                                        <tbody id=ScannerPortsListTable>
+
+
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        </p>
+    </div>
+</div>

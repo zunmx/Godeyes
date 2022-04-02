@@ -1,0 +1,111 @@
+{% load static %}
+
+<script>
+    $.cookie('pg', 1);
+    $('input').click(function (e) {
+        e.stopPropagation();//阻止其继续冒泡
+    })
+
+</script>
+
+<div class="modal fade" id="blackList" tabindex="-1" role="dialog" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content" style="background-color: #1b2136">
+            <div class="modal-header no-bd">
+                <h5 class="modal-title">
+                    <span class="fw-normal">黑名单列表</span>
+                </h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true" onclick="hiddenBLS()">×</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <p class="small">不允许出现在指纹中的字段，判断时不区分大小写，字段按行分割</p>
+                <form>
+                    <div class="row">
+                        <div class="col-sm-12">
+                            <div class="form-group form-group-default">
+                                <label>黑名单列表</label>
+                                <textarea class="form-control" id="fingerPrintBlackListText" aria-label="With textarea" rows="10"></textarea>
+                            </div>
+                        </div>
+                    </div>
+                </form>
+            </div>
+            <div class="modal-footer no-bd">
+                <button type="button" id="addRowButton" class="btn btn-primary" onclick="saveFPBLS()">保存</button>
+                <button type="button" class="btn btn-danger" data-dismiss="modal" onclick="hiddenFPBLS()">关闭</button>
+            </div>
+        </div>
+    </div>
+</div>
+{%if 'SuperAdmin' == power%}
+<div class="col-md-12">
+    <div class="card">
+        <div class="card-header">
+            <h4 class="card-title">操作</h4>
+            <div class="card-head-row">
+                <button class="btn btn-primary btn-border"
+                        onclick="rebuildFingerPrint()">重新构建指纹列表
+                </button>
+                &nbsp;&nbsp;&nbsp;
+                <button class="btn btn-secondary btn-border" type="button" onclick="setBlackListDialog()"
+                        id="setBlackList">指纹黑名单（字段不允许出现）
+                </button>
+            </div>
+        </div>
+    </div>
+</div>
+{%endif%}
+<div class="col-md-12">
+    <div class="card">
+        <div class="card-header">
+            <div class="card-title">总体指纹分布图</div>
+        </div>
+        <div class="card-body">
+            <div class="chart-container">
+                <div class="chartjs-size-monitor"
+                     style="position: absolute; inset: 0px; overflow: hidden; pointer-events: none; visibility: hidden; z-index: -1;">
+                    <div class="chartjs-size-monitor-expand"
+                         style="position:absolute;left:0;top:0;right:0;bottom:0;overflow:hidden;pointer-events:none;visibility:hidden;z-index:-1;">
+                        <div style="position:absolute;width:1000000px;height:1000000px;left:0;top:0"></div>
+                    </div>
+                    <div class="chartjs-size-monitor-shrink"
+                         style="position:absolute;left:0;top:0;right:0;bottom:0;overflow:hidden;pointer-events:none;visibility:hidden;z-index:-1;">
+                        <div style="position:absolute;width:200%;height:200%;left:0; top:0"></div>
+                    </div>
+                </div>
+                <canvas id="lineChart" width="278" height="300" class="chartjs-render-monitor"
+                        style="display: block; width: 278px; height: 300px;"></canvas>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="col-md-12">
+    <div class="card">
+        <div class="card-header">
+            <h4 class="card-title">指纹列表</h4>
+        </div>
+        <div class="card-body">
+            <div class="table-responsive">
+                <table id="basic-datatables" class="display table table-striped table-hover" style="width: 100%;">
+                    <thead>
+                    <tr>
+                        <th>指纹字段</th>
+                        <th>识别熵</th>
+                        <th>累计总数</th>
+                    </tr>
+                    </thead>
+                    <tbody id="fingerPrintTable">
+
+
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+    getFingerPrint()
+</script>

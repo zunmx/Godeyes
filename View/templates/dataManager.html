@@ -1,0 +1,122 @@
+{% load static %}
+<div class="row">
+    <div class="col-md-12">
+        <div class="card">
+            <div class="card-header">
+                <div class="form-group">
+                    <div class="selectgroup w-100">
+                        <label class="selectgroup-item" onclick='dataManager_item_oper("http", 1, getDBMSelected())'>
+                            <input type="radio" name="value" value="http" class="selectgroup-input" checked>
+                            <span class="selectgroup-button">HTTP</span>
+                        </label>
+                        <label class="selectgroup-item" onclick='dataManager_item_oper("mysql", 1, getDBMSelected())'>
+                            <input type="radio" name="value" value="mysql" class="selectgroup-input" e>
+                            <span class="selectgroup-button">MySQL</span>
+                        </label>
+                        <label class="selectgroup-item" onclick='dataManager_item_oper("telnet", 1, getDBMSelected())'>
+                            <input type="radio" name="value" value="telnet" class="selectgroup-input">
+                            <span class="selectgroup-button">Telnet</span>
+                        </label>
+                        <label class="selectgroup-item" onclick='dataManager_item_oper("ssh", 1, getDBMSelected())'>
+                            <input type="radio" name="value" value="ssh" class="selectgroup-input">
+                            <span class="selectgroup-button">SSH</span>
+                        </label>
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-md-12">
+
+
+                    <div class="card-header">
+                        <div class="row">
+                            <div class="col-md-9 navbar">
+                                <h3 class="card-title" id="scanner-title">HTTP列表</h3>
+                            </div>
+                            <div class="col-md-3  form-group form-floating-label">
+                                <div class="input-group">
+                                    <input type="text" placeholder="Search ..." class="form-control" id="DBM-search"
+                                           onkeydown="if(event.keyCode===13)dataManager_item_oper($.cookie('innerSeleted'), 1, getDBMSelected(),document.getElementById('DBM-search').value)">
+                                    <div class="input-group-prepend"
+                                         onclick='dataManager_item_oper($.cookie("innerSeleted"), 1, getDBMSelected(),document.getElementById("DBM-search").value)'>
+                                        <div class="btn btn-info btn btn-primary btn-border">
+                                            <i class="fa fa-search search-icon"></i>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+
+                    <div class="card-body" id="DM-context">
+
+                    </div>
+                    <div class="card-header">
+                        <div class="card-head-row">
+                            <div class="card-tools">
+                                <ul class="nav nav-pills nav-secondary nav-pills-no-bd nav-sm pagination pg-primary"
+                                    id="pills-tab"
+                                    role="tablist">
+                                    <li class="page-item">
+                                        <div class="form-group" id="dbManagerPageInfo">
+                                            共录入数据100条，
+                                        </div>
+                                    </li>
+                                    <li class="nav-item submenu">
+
+                                        <select class="form-control form-control-sm" id="DBMSelect"
+                                                style="float:right;"
+                                                onchange="dataManager_item_oper(dataManager_getSwitchChecked(),1, getDBMSelected())">
+                                            <option value="0">每页 5 条</option>
+                                            <option value="1">每页 10 条</option>
+                                            <option value="2">每页 15 条</option>
+                                            <option value="3">每页 20 条</option>
+                                            <option value="4">每页 50 条</option>
+                                        </select>
+
+                                    </li>
+                                    <li class="page-item" id="dbManagerToFirstPage"
+                                        onclick="dataManager_PageOper('reset')">
+                                        <a class="page-link" href="#" aria-label="Previous">
+                                            <span aria-hidden="true"><<</span>
+                                            <span class="sr-only">Previous</span>
+                                        </a>
+                                    </li>
+                                    <li class="page-item active" id="dbManagerToP1"
+                                        onclick="dataManager_PageOper('up')"><a class="page-link" href="#">1</a></li>
+                                    <li class="page-item" id="dbManagerNow" onclick="dataManager_PageOper('now')"><a
+                                            class="page-link" href="#">2</a></li>
+                                    <li class="page-item" id="dbManagerToN1" onclick="dataManager_PageOper('down')"><a
+                                            class="page-link" href="#">3</a></li>
+                                    <li class="page-item" id="dbManagerToLastPage"
+                                        onclick="dataManager_PageOper('last');">
+                                        <a class="page-link" href="#" aria-label="Next">
+                                            <span aria-hidden="true">>></span>
+                                            <span class="sr-only">Next</span>
+                                        </a>
+                                    </li>
+
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+</div>
+
+<script>
+    $.cookie('pg', 1);
+    $('input').click(function (e) {
+        e.stopPropagation();//阻止其继续冒泡
+    })
+    $(document).ready(function () {
+        document.getElementById("DBMSelect").options.selectedIndex = 0;
+        dataManager_item_oper("http", 1, getDBMSelected())
+    });
+
+
+</script>

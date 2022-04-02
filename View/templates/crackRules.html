@@ -1,0 +1,98 @@
+{% load static %}
+<div class="row">
+    <div class="col-md-12">
+        <div class="card">
+            <div class="card-header">
+                <div class="form-group">
+                    <div class="selectgroup w-100">
+                        <label class="selectgroup-item" onclick="crackFileOper('mysql','r')">
+                            <input type="radio" name="value" value="mysql" class="selectgroup-input" checked>
+                            <span class="selectgroup-button">MySQL</span>
+                        </label>
+                        <label class="selectgroup-item" onclick="crackFileOper('telnet','r')">
+                            <input type="radio" name="value" value="telnet" class="selectgroup-input">
+                            <span class="selectgroup-button">Telnet</span>
+                        </label>
+                        <label class="selectgroup-item" onclick="crackFileOper('ssh','r')">
+                            <input type="radio" name="value" value="ssh" class="selectgroup-input">
+                            <span class="selectgroup-button">SSH</span>
+                        </label>
+                    </div>
+                </div>
+            </div>
+            <div class="form-group">
+                <div class="form-group">
+                    <div class="input-group mb-3">
+                        <div class="input-group-prepend">
+                            <span class="input-group-text">规则文件--账户</span>
+                        </div>
+                        <select type="text" class="form-control" id="UFilename" style="box-sizing: border-box"
+                                onchange="crackFileOper(getCrackRulesSelected(),'c','CrackUserFile',this.options[this.options.selectedIndex].text)">
+                        </select>
+                        <div class="input-group-append">
+                            <button class="btn btn-info btn-border" id='newAccountList' type="button"
+                                    onclick="CreateCrackFile(getCrackRulesSelected(),'userFile')">新建
+                            </button>
+                            <button class="btn btn-primary btn-border" id='saveAccountList' type="button"
+                                    onclick="crackFileOper(getCrackRulesSelected(),'s','userFile','$FileName$',AccountList.value)">
+                                保存
+                            </button>
+                            <button class="btn btn-danger btn-border" id='delAccountList' type="button"
+                                    onclick="crackFileOper(getCrackRulesSelected(),'d','userFile',UFilename.options[UFilename.options.selectedIndex].text)">
+                                删除
+                            </button>
+                        </div>
+                    </div>
+                    <div class="input-group mb-3">
+                        <div class="input-group-prepend">
+                            <span class="input-group-text">规则文件--密码</span>
+                        </div>
+                        <select type="text" class="form-control" id="PFilename" style="box-sizing: border-box"
+                                onchange="crackFileOper(getCrackRulesSelected(),'c','CrackPasswordFile',this.options[this.options.selectedIndex].text)">
+                        </select>
+                        <div class="input-group-append">
+                            <button class="btn btn-info btn-border" id='newPasswordList' type="button"
+                                    onclick="CreateCrackFile(getCrackRulesSelected(),'passwordFile')">新建
+                            </button>
+                            </button>
+                            <button class="btn btn-primary btn-border" id='savePasswordList' type="button"
+                                    onclick="crackFileOper(getCrackRulesSelected(),'s','passwordFile','$FileName$',PasswordList.value)">
+                                保存
+                            </button>
+                            <button class="btn btn-danger btn-border" id='delPasswordList' type="button"
+                                    onclick="crackFileOper(getCrackRulesSelected(),'d','passwordFile',PFilename.options[PFilename.options.selectedIndex].text)">
+                                删除
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-md-6">
+                    <div class="input-group">
+                        <span class="input-group">用户名</span>
+                        <textarea class="form-control" id="AccountList" rows="25"></textarea>
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <div class="input-group">
+                        <span class="input-group">密码</span>
+                        <textarea class="form-control" id="PasswordList" rows="25"></textarea>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<script>
+    $(document).ready(function () {
+        crackFileOper('', 'l');
+        crackFileOper('mysql', 'r');
+
+    });
+    $('input').click(function (e) {
+        e.stopPropagation();//阻止其继续冒泡
+    })
+
+
+</script>
